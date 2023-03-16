@@ -15,7 +15,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>CPF/CNPJ</mat-label>
-    <input matInput [(ngModel)]="data.registroSocial" />
+    <input matInput [(ngModel)]="data.registroSocial" maxlength="14" maxlength="14" mask="000.000.000-00" required/>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Cep</mat-label>
