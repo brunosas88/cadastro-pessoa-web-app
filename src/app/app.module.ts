@@ -17,6 +17,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxMaskModule, IConfig } from 'ngx-mask'
+
+
+export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
 @NgModule({
   declarations: [
@@ -39,6 +43,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatInputModule,
     FormsModule,
     HttpClientModule,
+    NgxMaskModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
