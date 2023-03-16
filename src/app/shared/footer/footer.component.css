@@ -1,0 +1,8 @@
+.footer{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+span {
+    font-size: small;
+}
