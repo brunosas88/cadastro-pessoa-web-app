@@ -17,10 +17,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
-
-export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
+export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
 
 @NgModule({
   declarations: [
@@ -44,6 +44,7 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     FormsModule,
     HttpClientModule,
     NgxMaskModule.forRoot(),
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

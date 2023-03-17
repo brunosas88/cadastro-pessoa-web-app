@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTable } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Pessoa } from 'src/app/models/Pessoa';
 import { ElementDialogComponent } from 'src/app/shared/element-dialog/element-dialog.component';
-import { Endereco } from 'src/app/models/Endereco';
 
 const ELEMENT_DATA: Pessoa[] = [
   {
@@ -43,7 +43,8 @@ const ELEMENT_DATA: Pessoa[] = [
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent {
+export class HomeComponent implements AfterViewInit{
+
   displayedColumns: string[] = [
     'nome',
     'email',
@@ -52,7 +53,13 @@ export class HomeComponent {
     'gerenciamento',
   ];
 
-  dataSource = ELEMENT_DATA;
+  dataSource = new MatTableDataSource<Pessoa>(ELEMENT_DATA);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
 
   @ViewChild(MatTable) table!: MatTable<any>;
 
@@ -96,7 +103,7 @@ export class HomeComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        this.dataSource.push(result);
+        this.dataSource.data.push(result);
         console.log(this.dataSource);
         this.table.renderRows();
       }
