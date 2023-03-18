@@ -1,3 +1,4 @@
+import { CadastroPessoaApiService } from './../../services/cadastro-pessoa-api.service';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -5,65 +6,53 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Pessoa } from 'src/app/models/Pessoa';
 import { ElementDialogComponent } from 'src/app/shared/element-dialog/element-dialog.component';
 
-const ELEMENT_DATA: Pessoa[] = [
-  {
-    nome: 'bruno',
-    email: 'bruno@email',
-    telefone: '123456',
-    registroSocial: '123',
-    endereco: {
-      cep: '44000',
-      numero: '5',
-      logradouro: 'rua a',
-      bairro: 'bairro a',
-      cidade: 'cidade a',
-      uf: 'BA',
-      complemento: 'conjunto A',
-    },
-  },
-  {
-    nome: 'caio',
-    email: 'caio@email',
-    telefone: '65412',
-    registroSocial: '321',
-    endereco: {
-      cep: '55000',
-      numero: '5',
-      logradouro: 'rua b',
-      bairro: 'bairro b',
-      cidade: 'cidade b',
-      uf: 'BA',
-      complemento: 'conjunto B',
-    },
-  },
-];
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
+  providers: [CadastroPessoaApiService],
 })
-export class HomeComponent implements AfterViewInit{
-
+export class HomeComponent implements AfterViewInit {
   displayedColumns: string[] = [
+    'edicao',
     'nome',
     'email',
     'telefone',
     'registroSocial',
-    'gerenciamento',
+    'cep',
+    'numero',
+    'logradouro',
+    'bairro',
+    'cidade',
+    'uf',
+    'complemento',
   ];
 
-  dataSource = new MatTableDataSource<Pessoa>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<Pessoa>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
   @ViewChild(MatTable) table!: MatTable<any>;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    public pessoaService: CadastroPessoaApiService
+  ) {}
+
+  ngOnInit(): void {
+    this.listarPessoas();
+  }
+
+  ngAfterViewInit() {}
+
+  listarPessoas() {
+    this.pessoaService.listarPessoas().subscribe({
+      next: (resposta) => {
+        this.dataSource = new MatTableDataSource(resposta);
+        this.dataSource.paginator = this.paginator;
+      },
+    });
+  }
 
   openDialog(element: Pessoa | null): void {
     const dialogRef = this.dialog.open(ElementDialogComponent, {
@@ -112,5 +101,14 @@ export class HomeComponent implements AfterViewInit{
 
   atualizarInformacoes(pessoa: Pessoa | null): void {
     this.openDialog(pessoa);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }
