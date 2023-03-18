@@ -1,18 +1,54 @@
+.example-container {
+  min-width: 300px;
+  width: 75vw;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
 table {
   width: 100%;
 }
-
+.mat-mdc-table {
+  white-space: nowrap;
+}
 .container {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding: 3rem 10rem;
+  padding: 3rem 1rem;
+  flex-direction: column;
+}
+
+.container-table-filter {
+  display: flex;
   flex-direction: column;
 }
 
 th, td {
   text-align: center;
 }
+
+.coluna-edicao {
+  width: 300px;
+}
+
+.mat-mdc-form-field {
+  width: 75vw;
+  min-width: 300px;
+  align-self: center;
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 519px){
+
+  .coluna-registro-social{
+    display: none;
+  }
+
+}
+
 
 
