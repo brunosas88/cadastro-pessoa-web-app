@@ -1,9 +1,9 @@
+import { Pessoa } from './../../models/Pessoa';
 import { CadastroPessoaApiService } from './../../services/cadastro-pessoa-api.service';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { Pessoa } from 'src/app/models/Pessoa';
 import { ElementDialogComponent } from 'src/app/shared/element-dialog/element-dialog.component';
 
 @Component({
@@ -92,9 +92,8 @@ export class HomeComponent implements AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        this.dataSource.data.push(result);
-        console.log(this.dataSource);
-        this.table.renderRows();
+        this.pessoaService.cadastrarPessoa(result).subscribe();
+        this.listarPessoas();
       }
     });
   }
