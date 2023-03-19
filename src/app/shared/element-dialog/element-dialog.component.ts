@@ -1,7 +1,7 @@
 import { Pessoa } from './../../models/Pessoa';
 import { CadastroPessoaApiService } from './../../services/cadastro-pessoa-api.service';
 import { CepServiceService } from './cep-service.service';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
@@ -15,14 +15,14 @@ import {
   templateUrl: './element-dialog.component.html',
   styleUrls: ['./element-dialog.component.css'],
 })
-export class ElementDialogComponent {
+export class ElementDialogComponent implements OnInit {
   cadastroForm: FormGroup;
 
   validaFormulario = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: Pessoa,
+    public data: any,
     public dialogRef: MatDialogRef<ElementDialogComponent>,
     private cepService: CepServiceService,
     private cadastroService: CadastroPessoaApiService,
@@ -33,6 +33,7 @@ export class ElementDialogComponent {
       email: '',
       telefone: '',
       registroSocial: '',
+      estaAtivo: '',
       cep: '',
       numero: '',
       logradouro: '',
@@ -41,6 +42,10 @@ export class ElementDialogComponent {
       uf: '',
       complemento: '',
     });
+  }
+
+  ngOnInit(): void {
+    this.cadastroForm.patchValue(this.data);
   }
 
   onCancelar(): void {
@@ -70,7 +75,9 @@ export class ElementDialogComponent {
   }
 
   submeterFormulario() {
-    const novaPessoa = this.converterCamposDoFormularioParaPessoa(this.cadastroForm.value);
+    const novaPessoa = this.converterCamposDoFormularioParaPessoa(
+      this.cadastroForm.value
+    );
     this.cadastroService.cadastrarPessoa(novaPessoa).subscribe();
     this.dialogRef.close(true);
     alert(`Pessoa Cadastrada com Sucesso`);

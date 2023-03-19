@@ -69,6 +69,29 @@ export class HomeComponent {
     });
   }
 
+  iniciarEdicao(dadosFormulario: Pessoa) {
+    this.modal.open(ElementDialogComponent, {
+      data: this.converterPessoaParaCamposDoFormulario(dadosFormulario),
+    });
+  }
+
+  converterPessoaParaCamposDoFormulario(pessoa: Pessoa): any {
+    return {
+      nome: pessoa.nome,
+      email: pessoa.email,
+      telefone: pessoa.telefone,
+      registroSocial: pessoa.registroSocial,
+      estaAtivo: false,
+      cep: pessoa.endereco.cep,
+      numero: pessoa.endereco.numero,
+      logradouro: pessoa.endereco.logradouro,
+      bairro: pessoa.endereco.bairro,
+      cidade: pessoa.endereco.cidade,
+      uf: pessoa.endereco.uf,
+      complemento: pessoa.endereco.complemento,
+    };
+  }
+
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

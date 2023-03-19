@@ -19,7 +19,8 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>CPF/CNPJ</mat-label>
-      <input matInput formControlName="registroSocial" mask="000.000.000-00||00.000.000/0000-00" required/>
+      <input matInput *ngIf="data ? true : false " formControlName="registroSocial" mask="000.000.000-00||00.000.000/0000-00" readonly/>
+      <input matInput *ngIf="data ? false : true " formControlName="registroSocial" mask="000.000.000-00||00.000.000/0000-00" required/>
       <mat-error>{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field>
@@ -60,9 +61,12 @@
       <mat-hint>Campo preenchido por CEP!</mat-hint>
       <mat-error>{{getErrorMessage()}}</mat-error>
     </mat-form-field>
+
+    <mat-checkbox *ngIf="data ? true : false " formControlName="estaAtivo" class="example-margin">Cadastro Ativo</mat-checkbox>
+
   </div>
   <div mat-dialog-actions class="dialog-buttons">
     <button mat-button type="button" [mat-dialog-close]="false">Cancelar</button>
-    <button mat-button [disabled]="getFormularioInvalido()" type="submit">Cadastrar</button>
+    <button mat-button [disabled]="getFormularioInvalido()" type="submit">{{data? 'Editar' : 'Cadastrar'}}</button>
   </div>
 </form>
