@@ -16,8 +16,6 @@ export class CadastroPessoaApiService {
   }
 
   cadastrarPessoa(dadosPessoa: Pessoa): Observable<Pessoa> {
-    console.log(dadosPessoa);
-    console.log('dentro do serviço http');
     return this.httpCliente.post<Pessoa>(this.apiUrl, dadosPessoa);
   }
 }
