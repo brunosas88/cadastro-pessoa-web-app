@@ -44,13 +44,20 @@ export class HomeComponent {
     this.paginator._intl.previousPageLabel = 'Página Anterior';
     this.paginator._intl.firstPageLabel = 'Primeira Página';
     this.paginator._intl.lastPageLabel = 'Última Página';
-    this.paginator._intl.getRangeLabel = (pagina: number, quantidadeItens: number, quantidadePaginas: number) => {
+    this.paginator._intl.getRangeLabel = (
+      pagina: number,
+      quantidadeItens: number,
+      quantidadePaginas: number
+    ) => {
       if (quantidadePaginas === 0 || quantidadeItens === 0) {
-        return `0 de ${quantidadePaginas }`;
+        return `0 de ${quantidadePaginas}`;
       }
       quantidadePaginas = Math.max(quantidadePaginas, 0);
       const indiceInicial = pagina * quantidadeItens;
-      const indiceFinal = indiceInicial < quantidadePaginas ? Math.min(indiceInicial + quantidadeItens, quantidadePaginas) : indiceInicial + quantidadeItens;
+      const indiceFinal =
+        indiceInicial < quantidadePaginas
+          ? Math.min(indiceInicial + quantidadeItens, quantidadePaginas)
+          : indiceInicial + quantidadeItens;
       return `${indiceInicial + 1} - ${indiceFinal} de ${quantidadePaginas}`;
     };
   }
