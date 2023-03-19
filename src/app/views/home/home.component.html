@@ -64,6 +64,13 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="estaAtivo">
+          <th mat-header-cell *matHeaderCellDef>Cadastro Ativo</th>
+          <td mat-cell *matCellDef="let dado">
+            {{ dado.estaAtivo == true ? "Ativo" : "Inativo" }}
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="cep">
           <th mat-header-cell *matHeaderCellDef>CEP</th>
           <td mat-cell *matCellDef="let dado">
@@ -102,6 +109,20 @@
           <th mat-header-cell *matHeaderCellDef>Complemento</th>
           <td mat-cell *matCellDef="let dado">
             {{ dado.endereco.complemento }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="criadoEm">
+          <th mat-header-cell *matHeaderCellDef>Criado</th>
+          <td mat-cell *matCellDef="let dado">
+            {{ dado.criadoEm }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="atualizadoEm">
+          <th mat-header-cell *matHeaderCellDef>Atualizado</th>
+          <td mat-cell *matCellDef="let dado">
+            {{ dado.atualizadoEm }}
           </td>
         </ng-container>
 
