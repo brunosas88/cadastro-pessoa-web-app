@@ -4,12 +4,12 @@
   <div mat-dialog-content class="dialog-fields">
     <mat-form-field>
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="nome" required/>
+      <input matInput formControlName="nome" minlength="3" maxlength="60" required/>
       <mat-error>{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" required/>
+      <input matInput formControlName="email" email required/>
       <mat-error>{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field>
@@ -29,7 +29,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Numero</mat-label>
-      <input matInput formControlName="numero" required />
+      <input matInput formControlName="numero" mask="0*" required />
       <mat-error>{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field>
