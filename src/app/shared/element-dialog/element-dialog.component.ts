@@ -72,7 +72,8 @@ export class ElementDialogComponent {
   submeterFormulario() {
     const novaPessoa = this.converterCamposDoFormularioParaPessoa(this.cadastroForm.value);
     this.cadastroService.cadastrarPessoa(novaPessoa).subscribe();
-    this.dialogRef.close();
+    this.dialogRef.close(true);
+    alert(`Pessoa Cadastrada com Sucesso`);
   }
 
   converterCamposDoFormularioParaPessoa(camposFormulario: any): Pessoa {
