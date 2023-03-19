@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
 
@@ -46,6 +47,7 @@ export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
     NgxMaskModule.forRoot(),
     MatPaginatorModule,
     ReactiveFormsModule,
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
