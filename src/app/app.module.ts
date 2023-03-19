@@ -15,7 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ElementDialogComponent } from './shared/element-dialog/element-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -45,6 +45,7 @@ export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
     HttpClientModule,
     NgxMaskModule.forRoot(),
     MatPaginatorModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
