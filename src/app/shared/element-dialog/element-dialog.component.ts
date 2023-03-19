@@ -1,4 +1,4 @@
-import { Pessoa } from './../../models/Pessoa';
+import { PessoaRequisicao } from '../../models/PessoaRequisicao';
 import { CadastroPessoaApiService } from './../../services/cadastro-pessoa-api.service';
 import { CepServiceService } from './cep-service.service';
 import { Component, Inject, OnInit } from '@angular/core';
@@ -17,8 +17,6 @@ import {
 })
 export class ElementDialogComponent implements OnInit {
   cadastroForm: FormGroup;
-
-  validaFormulario = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -53,7 +51,7 @@ export class ElementDialogComponent implements OnInit {
   }
 
   consultarCep(event: any) {
-    this.cepService.buscar(event.target.value).subscribe({
+    this.cepService.buscarCep(event.target.value).subscribe({
       next: (dados: any) => {
         this.cadastroForm.patchValue({
           logradouro: dados.logradouro ? dados.logradouro : '-',
@@ -75,20 +73,31 @@ export class ElementDialogComponent implements OnInit {
   }
 
   submeterFormulario() {
-    const novaPessoa = this.converterCamposDoFormularioParaPessoa(
-      this.cadastroForm.value
-    );
-    this.cadastroService.cadastrarPessoa(novaPessoa).subscribe();
+    if (this.data) {
+      const novaPessoa = this.converterCamposDoFormularioParaPessoaRequisicao(
+        this.cadastroForm.value
+      );
+      this.cadastroService.editarPessoa(novaPessoa).subscribe();
+      alert(`Informações Atualizadas com Sucesso`);
+    } else {
+      const novaPessoa = this.converterCamposDoFormularioParaPessoaRequisicao(
+        this.cadastroForm.value
+      );
+      this.cadastroService.cadastrarPessoa(novaPessoa).subscribe();
+      alert(`Pessoa Cadastrada com Sucesso`);
+    }
     this.dialogRef.close(true);
-    alert(`Pessoa Cadastrada com Sucesso`);
   }
 
-  converterCamposDoFormularioParaPessoa(camposFormulario: any): Pessoa {
+  converterCamposDoFormularioParaPessoaRequisicao(
+    camposFormulario: any
+  ): PessoaRequisicao {
     return {
       nome: camposFormulario.nome,
       email: camposFormulario.email,
       telefone: camposFormulario.telefone,
       registroSocial: camposFormulario.registroSocial,
+      estaAtivo: camposFormulario.estaAtivo || false,
       endereco: {
         cep: camposFormulario.cep,
         numero: camposFormulario.numero,

@@ -1,9 +1,9 @@
-import { Pessoa } from './../../models/Pessoa';
+import { PessoaDadosCompletos } from './../../models/PessoaDadosCompletos';
 import { CadastroPessoaApiService } from './../../services/cadastro-pessoa-api.service';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { ElementDialogComponent } from 'src/app/shared/element-dialog/element-dialog.component';
 
 @Component({
@@ -19,6 +19,7 @@ export class HomeComponent {
     'email',
     'telefone',
     'registroSocial',
+    'estaAtivo',
     'cep',
     'numero',
     'logradouro',
@@ -26,9 +27,11 @@ export class HomeComponent {
     'cidade',
     'uf',
     'complemento',
+    'criadoEm',
+    'atualizadoEm',
   ];
 
-  dataSource = new MatTableDataSource<Pessoa>();
+  dataSource = new MatTableDataSource<PessoaDadosCompletos>();
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
@@ -69,19 +72,22 @@ export class HomeComponent {
     });
   }
 
-  iniciarEdicao(dadosFormulario: Pessoa) {
-    this.modal.open(ElementDialogComponent, {
+  iniciarEdicao(dadosFormulario: PessoaDadosCompletos) {
+    const modalEdicao = this.modal.open(ElementDialogComponent, {
       data: this.converterPessoaParaCamposDoFormulario(dadosFormulario),
+    });
+    modalEdicao.afterClosed().subscribe((valor) => {
+      this.listarPessoas();
     });
   }
 
-  converterPessoaParaCamposDoFormulario(pessoa: Pessoa): any {
+  converterPessoaParaCamposDoFormulario(pessoa: PessoaDadosCompletos): any {
     return {
       nome: pessoa.nome,
       email: pessoa.email,
       telefone: pessoa.telefone,
       registroSocial: pessoa.registroSocial,
-      estaAtivo: false,
+      estaAtivo: pessoa.estaAtivo,
       cep: pessoa.endereco.cep,
       numero: pessoa.endereco.numero,
       logradouro: pessoa.endereco.logradouro,

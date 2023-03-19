@@ -1,5 +1,5 @@
-import { ReactiveFormsModule } from '@angular/forms';
-import { Pessoa } from './../models/Pessoa';
+import { PessoaDadosCompletos } from './../models/PessoaDadosCompletos';
+import { PessoaRequisicao } from '../models/PessoaRequisicao';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -12,12 +12,16 @@ export class CadastroPessoaApiService {
 
   constructor(private httpCliente: HttpClient) {}
 
-  listarPessoas(): Observable<Pessoa[]> {
-    return this.httpCliente.get<Pessoa[]>(this.apiUrl);
+  listarPessoas(): Observable<PessoaDadosCompletos[]> {
+    return this.httpCliente.get<PessoaDadosCompletos[]>(this.apiUrl);
   }
 
-  cadastrarPessoa(dadosPessoa: Pessoa): Observable<Pessoa> {
-    return this.httpCliente.post<Pessoa>(this.apiUrl, dadosPessoa);
+  cadastrarPessoa(dadosPessoa: PessoaRequisicao): Observable<PessoaRequisicao> {
+    return this.httpCliente.post<PessoaRequisicao>(this.apiUrl, dadosPessoa);
+  }
+
+  editarPessoa(dadosPessoa: PessoaRequisicao): Observable<any> {
+    return this.httpCliente.put(`${this.apiUrl}/editar`, dadosPessoa);
   }
 
   excluirPessoa(registroSocial: string): Observable<any> {
