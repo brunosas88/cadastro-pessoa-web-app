@@ -7,11 +7,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CadastroPessoaApiService {
-  apiUrl = 'http://localhost:5000';
+  apiUrl = 'http://localhost:5000/pessoas';
 
   constructor(private httpCliente: HttpClient) {}
 
-  listarPessoas() : Observable<Pessoa[]>{
-    return this.httpCliente.get<Pessoa[]>(`${this.apiUrl}/pessoas`);
+  listarPessoas(): Observable<Pessoa[]> {
+    return this.httpCliente.get<Pessoa[]>(this.apiUrl);
+  }
+
+  cadastrarPessoa(dadosPessoa: Pessoa): Observable<Pessoa> {
+    console.log(dadosPessoa);
+    console.log('dentro do serviço http');
+    return this.httpCliente.post<Pessoa>(this.apiUrl, dadosPessoa);
   }
 }
