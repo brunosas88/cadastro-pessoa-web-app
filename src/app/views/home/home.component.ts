@@ -12,7 +12,7 @@ import { ElementDialogComponent } from 'src/app/shared/element-dialog/element-di
   styleUrls: ['./home.component.css'],
   providers: [CadastroPessoaApiService],
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent {
   displayedColumns: string[] = [
     'edicao',
     'nome',
@@ -35,15 +35,13 @@ export class HomeComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<any>;
 
   constructor(
-    public dialog: MatDialog,
+    public modal: MatDialog,
     public pessoaService: CadastroPessoaApiService
   ) {}
 
   ngOnInit(): void {
     this.listarPessoas();
   }
-
-  ngAfterViewInit() {}
 
   listarPessoas() {
     this.pessoaService.listarPessoas().subscribe({
@@ -54,55 +52,16 @@ export class HomeComponent implements AfterViewInit {
     });
   }
 
-  openDialog(element: Pessoa | null): void {
-    const dialogRef = this.dialog.open(ElementDialogComponent, {
-      data:
-        element == null
-          ? {
-              nome: '',
-              email: '',
-              telefone: '',
-              registroSocial: '',
-              endereco: {
-                cep: '',
-                numero: '',
-                logradouro: '',
-                bairro: '',
-                cidade: '',
-                uf: '',
-                complemento: '',
-              },
-            }
-          : {
-              nome: element.nome,
-              email: element.email,
-              telefone: element.telefone,
-              registroSocial: element.registroSocial,
-              endereco: {
-                cep: element.endereco.cep,
-                numero: element.endereco.numero,
-                endereco: element.endereco.logradouro,
-                bairro: element.endereco.bairro,
-                cidade: element.endereco.cidade,
-                uf: element.endereco.uf,
-                complemento: element.endereco.complemento,
-              },
-            },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
-        this.pessoaService.cadastrarPessoa(result).subscribe();
-        this.listarPessoas();
-      }
-    });
+  iniciarNovoCadastro() {
+    const modalCadastro = this.modal.open(ElementDialogComponent)
+    modalCadastro.afterClosed().subscribe( valor => this.listarPessoas())
   }
 
-  atualizarInformacoes(pessoa: Pessoa | null): void {
-    this.openDialog(pessoa);
+  atualizarInformacoes(): void {
+
   }
 
-  applyFilter(event: Event) {
+  aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 

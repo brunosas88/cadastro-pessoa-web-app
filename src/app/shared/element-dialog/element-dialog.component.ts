@@ -1,8 +1,14 @@
+import { Pessoa } from './../../models/Pessoa';
+import { CadastroPessoaApiService } from './../../services/cadastro-pessoa-api.service';
 import { CepServiceService } from './cep-service.service';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Pessoa } from 'src/app/models/Pessoa';
-import { FormControl, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-element-dialog',
@@ -10,9 +16,7 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./element-dialog.component.css'],
 })
 export class ElementDialogComponent {
-  element!: Pessoa;
-
-  cep = new FormControl('', [Validators.required]);
+  cadastroForm: FormGroup;
 
   validaFormulario = true;
 
@@ -20,44 +24,77 @@ export class ElementDialogComponent {
     @Inject(MAT_DIALOG_DATA)
     public data: Pessoa,
     public dialogRef: MatDialogRef<ElementDialogComponent>,
-    private cepService: CepServiceService
-  ) {}
+    private cepService: CepServiceService,
+    private cadastroService: CadastroPessoaApiService,
+    private construtorFormulario: FormBuilder
+  ) {
+    this.cadastroForm = this.construtorFormulario.group({
+      nome: '',
+      email: '',
+      telefone: '',
+      registroSocial: '',
+      cep: '',
+      numero: '',
+      logradouro: '',
+      bairro: '',
+      cidade: '',
+      uf: '',
+      complemento: '',
+    });
+  }
 
   onCancelar(): void {
     this.dialogRef.close();
   }
 
   consultarCep(event: any) {
-    this.cepService.buscar(event.target.value).subscribe(
-      (dados: any) => {
-        this.data.endereco.bairro = dados.bairro
-          ? dados.bairro
-          : 'Não Encontrado';
-        this.data.endereco.logradouro = dados.logradouro
-          ? dados.logradouro
-          : 'Não Encontrado';
-        this.data.endereco.complemento = dados.complemento;
-        this.data.endereco.cidade = dados.localidade
-          ? dados.localidade
-          : 'Não Encontrado';
-        this.data.endereco.uf = dados.uf ? dados.uf : 'Não Encontrado';
-        this.validaFormulario = true;
-        if (dados.uf) {
-          this.validaFormulario = false;
-        }
+    this.cepService.buscar(event.target.value).subscribe({
+      next: (dados: any) => {
+        this.cadastroForm.patchValue({
+          logradouro: dados.logradouro ? dados.logradouro : '-',
+          bairro: dados.bairro ? dados.bairro : '-',
+          cidade: dados.localidade ? dados.localidade : '-',
+          uf: dados.uf ? dados.uf : '-',
+          complemento: dados.complemento,
+        });
       },
-      (error: any) => {
-        this.data.endereco.bairro = 'Não Encontrado';
-        this.data.endereco.logradouro = 'Não Encontrado';
-        this.data.endereco.cidade = 'Não Encontrado';
-        this.data.endereco.uf = 'Não Encontrado';
-        this.validaFormulario = true;
-      }
-    );
+      error: (erro: any) => {
+        this.cadastroForm.patchValue({
+          logradouro: '-',
+          bairro: '-',
+          cidade: '-',
+          uf: '-',
+        });
+      },
+    });
   }
 
-  getValidaFormulario() {
-    return this.validaFormulario;
+  submeterFormulario() {
+    const novaPessoa = this.converterCamposDoFormularioParaPessoa(this.cadastroForm.value);
+    this.cadastroService.cadastrarPessoa(novaPessoa).subscribe();
+    this.dialogRef.close();
+  }
+
+  converterCamposDoFormularioParaPessoa(camposFormulario: any): Pessoa {
+    return {
+      nome: camposFormulario.nome,
+      email: camposFormulario.email,
+      telefone: camposFormulario.telefone,
+      registroSocial: camposFormulario.registroSocial,
+      endereco: {
+        cep: camposFormulario.cep,
+        numero: camposFormulario.numero,
+        logradouro: camposFormulario.logradouro,
+        bairro: camposFormulario.bairro,
+        cidade: camposFormulario.cidade,
+        uf: camposFormulario.uf,
+        complemento: camposFormulario.complemento,
+      },
+    };
+  }
+
+  getFormularioInvalido() {
+    return this.cadastroForm.invalid;
   }
 
   getErrorMessage() {
