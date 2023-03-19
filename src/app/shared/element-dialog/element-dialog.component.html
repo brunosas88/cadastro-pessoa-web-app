@@ -62,7 +62,7 @@
     </mat-form-field>
   </div>
   <div mat-dialog-actions class="dialog-buttons">
-    <button mat-button (click)="onCancelar()">Cancelar</button>
+    <button mat-button type="button" [mat-dialog-close]="false">Cancelar</button>
     <button mat-button [disabled]="getFormularioInvalido()" type="submit">Cadastrar</button>
   </div>
 </form>
