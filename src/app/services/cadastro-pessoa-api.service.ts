@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { Pessoa } from './../models/Pessoa';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -17,5 +18,9 @@ export class CadastroPessoaApiService {
 
   cadastrarPessoa(dadosPessoa: Pessoa): Observable<Pessoa> {
     return this.httpCliente.post<Pessoa>(this.apiUrl, dadosPessoa);
+  }
+
+  excluirPessoa(registroSocial: string): Observable<any> {
+    return this.httpCliente.delete(`${this.apiUrl}/excluir/${registroSocial}`);
   }
 }
